@@ -1,49 +1,115 @@
-<div class="container mt-4">
-  <div class="row">
-    <!-- OCCUPIED TABLE -->
-    <div class="col-md-6">
-      <h4>OCCUPIED</h4>
-      <table class="table table-bordered table-striped">
-        <thead class="table-dark">
-          <tr>
-            <th>Location</th>
-            <th>Count</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Balintawak</td>
-            <td>1</td>
-          </tr>
-          <tr>
-            <td>Mindanao</td>
-            <td>2</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Philippines Heatmap with Status Table</title>
 
-    <!-- VACANT TABLE -->
-    <div class="col-md-6">
-      <h4>VACANT</h4>
-      <table class="table table-bordered table-striped">
-        <thead class="table-success">
-          <tr>
-            <th>Location</th>
-            <th>Count</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Mindanao Avenue</td>
-            <td>33</td>
-          </tr>
-          <tr>
-            <td>Balintawak</td>
-            <td>4</td>
-          </tr>
-        </tbody>
-      </table>
+    <!-- Leaflet and Plugins -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/python-visualization/folium@main/folium/templates/leaflet_heat.min.js"></script>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Styles -->
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        #map {
+            height: 60%;
+            width: 100%;
+        }
+        .table-container {
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Heatmap Container -->
+<div id="map"></div>
+
+<!-- Tables Container -->
+<div class="container-fluid table-container">
+    <div class="row">
+        <!-- OCCUPIED -->
+        <div class="col-md-6">
+            <h4>OCCUPIED</h4>
+            <table class="table table-bordered table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Location</th>
+                        <th>Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Balintawak</td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <td>Mindanao</td>
+                        <td>2</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- VACANT -->
+        <div class="col-md-6">
+            <h4>VACANT</h4>
+            <table class="table table-bordered table-striped">
+                <thead class="table-success">
+                    <tr>
+                        <th>Location</th>
+                        <th>Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Mindanao Avenue</td>
+                        <td>33</td>
+                    </tr>
+                    <tr>
+                        <td>Balintawak</td>
+                        <td>4</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-  </div>
 </div>
+
+<!-- Heatmap Script -->
+<script>
+    // Initialize Map
+    var map = L.map('map').setView([12.8797, 121.7740], 6);
+
+    // Base Layer
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Heatmap Data: [latitude, longitude, intensity]
+    var heatData = [
+        [14.6574221, 121.0038959, 10],  // Balintawak
+        [14.6755775, 121.0322954, 15],  // Mindanao Avenue
+        [15.0283014, 120.6938038, 25],  // San Fernando, Pampanga
+        [7.0858153, 125.4708355, 40]    // Davao City
+    ];
+
+    // Add Heatmap Layer
+    L.heatLayer(heatData, {
+        radius: 25,
+        blur: 15,
+        minOpacity: 0.5,
+        maxZoom: 18
+    }).addTo(map);
+</script>
+
+</body>
+</html>
